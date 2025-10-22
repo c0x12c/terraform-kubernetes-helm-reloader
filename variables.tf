@@ -19,7 +19,7 @@ variable "create_namespace" {
 variable "chart_version" {
   description = "Version of the Reloader Helm chart"
   type        = string
-  default     = "1.0.106"
+  default     = "1.4.8"
 }
 
 variable "chart_url" {
