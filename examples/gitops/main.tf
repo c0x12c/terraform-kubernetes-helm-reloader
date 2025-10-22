@@ -14,6 +14,10 @@ module "reloader" {
   # Ignore system namespaces
   namespaces_to_ignore = "kube-system,kube-public,kube-node-lease"
   
+  # Additional GitOps Configuration
+  is_argo_rollouts = true          # Enable Argo Rollouts support
+  enable_metrics_by_namespace = true  # Enable Prometheus metrics
+  
   # Resource Configuration
   replica_count = 1
   resources = {

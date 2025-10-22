@@ -10,9 +10,14 @@ module "reloader" {
   log_format = "json"
   
   # Resource Filtering
-  resources_to_ignore = "configmaps"  # Ignore ConfigMaps, only watch Secrets
-  ignored_workload_types = "jobs,cronjobs"
+  ignore_configmaps = true  # Ignore ConfigMaps, only watch Secrets
+  ignore_jobs = true
+  ignore_cronjobs = true
   namespaces_to_ignore = "kube-system,kube-public"
+  
+  # Additional Configuration
+  enable_ha = true  # Enable high availability
+  enable_metrics_by_namespace = true  # Enable Prometheus metrics
   
   # Resource Configuration
   replica_count = 2
