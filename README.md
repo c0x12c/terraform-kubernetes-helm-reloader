@@ -5,7 +5,7 @@ This Terraform module deploys [Stakater Reloader](https://github.com/stakater/Re
 ## Features
 
 - Deploys Reloader using the official Stakater Helm chart
-- Configurable RBAC with ClusterRole and ClusterRoleBinding
+- Creates namespace with custom labels and annotations
 - Support for all Reloader configuration options
 - Flexible resource filtering and namespace selection
 - Customizable annotation key overrides
@@ -131,10 +131,7 @@ module "reloader" {
 | Name | Type |
 |------|------|
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubernetes_cluster_role.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role) | resource |
-| [kubernetes_cluster_role_binding.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role_binding) | resource |
 | [kubernetes_namespace.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
-| [kubernetes_service_account.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
 
 ## Inputs
 
@@ -178,8 +175,6 @@ module "reloader" {
 | <a name="input_secret_annotation"></a> [secret\_annotation](#input\_secret\_annotation) | Override secret.reloader.stakater.com/reload annotation key | `string` | `null` | no |
 | <a name="input_secret_auto_annotation"></a> [secret\_auto\_annotation](#input\_secret\_auto\_annotation) | Override secret.reloader.stakater.com/auto annotation key | `string` | `null` | no |
 | <a name="input_security_context"></a> [security\_context](#input\_security\_context) | Security context for Reloader pods | <pre>object({<br/>    run_as_non_root = optional(bool, true)<br/>    run_as_user     = optional(number, 65534)<br/>    run_as_group    = optional(number, 65534)<br/>    fs_group        = optional(number, 65534)<br/>  })</pre> | `{}` | no |
-| <a name="input_service_account_annotations"></a> [service\_account\_annotations](#input\_service\_account\_annotations) | Annotations to apply to the service account | `map(string)` | `{}` | no |
-| <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | Name of the service account | `string` | `"reloader"` | no |
 | <a name="input_tolerations"></a> [tolerations](#input\_tolerations) | Tolerations for Reloader pods | <pre>list(object({<br/>    key      = string<br/>    operator = string<br/>    value    = optional(string)<br/>    effect   = optional(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_watch_globally"></a> [watch\_globally](#input\_watch\_globally) | Whether to watch all namespaces globally | `bool` | `true` | no |
 
@@ -187,14 +182,12 @@ module "reloader" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cluster_role_binding_name"></a> [cluster\_role\_binding\_name](#output\_cluster\_role\_binding\_name) | Name of the cluster role binding (if RBAC is enabled) |
-| <a name="output_cluster_role_name"></a> [cluster\_role\_name](#output\_cluster\_role\_name) | Name of the cluster role (if RBAC is enabled) |
 | <a name="output_helm_release_name"></a> [helm\_release\_name](#output\_helm\_release\_name) | Name of the Helm release |
 | <a name="output_helm_release_namespace"></a> [helm\_release\_namespace](#output\_helm\_release\_namespace) | Namespace where Reloader is deployed |
 | <a name="output_helm_release_status"></a> [helm\_release\_status](#output\_helm\_release\_status) | Status of the Helm release |
 | <a name="output_helm_release_version"></a> [helm\_release\_version](#output\_helm\_release\_version) | Version of the Helm release |
 | <a name="output_namespace_name"></a> [namespace\_name](#output\_namespace\_name) | Name of the namespace where Reloader is deployed |
-| <a name="output_service_account_name"></a> [service\_account\_name](#output\_service\_account\_name) | Name of the service account |
+| <a name="output_service_account_name"></a> [service\_account\_name](#output\_service\_account\_name) | Name of the service account (managed by Helm chart) |
 
 ## Reloader Configuration
 

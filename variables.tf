@@ -28,17 +28,6 @@ variable "chart_url" {
   default     = "https://stakater.github.io/stakater-charts"
 }
 
-variable "create_rbac" {
-  description = "Whether to create RBAC resources"
-  type        = bool
-  default     = true
-}
-
-variable "service_account_name" {
-  description = "Name of the service account"
-  type        = string
-  default     = "reloader"
-}
 
 # Reloader Configuration
 variable "watch_globally" {
@@ -284,11 +273,6 @@ variable "namespace_annotations" {
   default     = {}
 }
 
-variable "service_account_annotations" {
-  description = "Annotations to apply to the service account"
-  type        = map(string)
-  default     = {}
-}
 
 # Additional Values
 variable "additional_values" {

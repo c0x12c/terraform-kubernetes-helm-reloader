@@ -39,13 +39,13 @@ locals {
     }
     
     serviceAccount = {
-      create = var.create_rbac
-      name = var.service_account_name
-      annotations = var.service_account_annotations
+      create = true
+      name = "reloader"
+      annotations = {}
     }
     
     rbac = {
-      create = var.create_rbac
+      create = true
     }
     
     resources = var.resources

@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release of the Terraform Kubernetes Helm Reloader module
 - Support for deploying Stakater Reloader using Helm
-- Configurable RBAC with ClusterRole and ClusterRoleBinding
+- Namespace creation with custom labels and annotations
 - Support for all Reloader configuration options including:
   - Reload strategies (env-vars, annotations)
   - Resource filtering (ConfigMaps, Secrets, workload types)
@@ -29,7 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Reload Strategies**: Support for both env-vars and annotations strategies
 - **Resource Filtering**: Filter by resource types, workload types, and labels
 - **Namespace Management**: Global watching or selective namespace filtering
-- **Security**: Configurable security contexts and RBAC
+- **Security**: Configurable security contexts (RBAC managed by Helm chart)
 - **Observability**: JSON logging and pprof support
 - **GitOps Ready**: Annotations strategy prevents config drift in ArgoCD/Flux
 - **Production Ready**: Resource limits, node selection, and high availability support
+- **Simplified Architecture**: Only creates namespace, lets Helm chart handle all other resources
