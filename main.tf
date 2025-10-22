@@ -22,7 +22,7 @@ resource "helm_release" "this" {
   chart            = "reloader"
   version          = var.chart_version
   max_history      = 3
-  create_namespace = false  # We handle namespace creation separately
+  create_namespace = false # We handle namespace creation separately
   values           = [local.manifest]
 
   depends_on = [kubernetes_namespace.this]
