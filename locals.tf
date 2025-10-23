@@ -1,63 +1,55 @@
 locals {
   # Build the Helm values manifest
   manifest = yamlencode({
-    reloader = {
-      watchGlobally = var.watch_globally
-      reloadStrategy = var.reload_strategy
-      logLevel = var.log_level
-      logFormat = var.log_format
-      
-      # Resource filtering
-      resourcesToIgnore = var.resources_to_ignore
-      ignoredWorkloadTypes = var.ignored_workload_types
-      resourceLabelSelector = var.resource_label_selector
-      namespaceSelector = var.namespace_selector
-      namespacesToIgnore = var.namespaces_to_ignore
-      
-      # Annotation overrides
-      autoAnnotation = var.auto_annotation
-      secretAutoAnnotation = var.secret_auto_annotation
-      configmapAutoAnnotation = var.configmap_auto_annotation
-      autoSearchAnnotation = var.auto_search_annotation
-      searchMatchAnnotation = var.search_match_annotation
-      secretAnnotation = var.secret_annotation
-      configmapAnnotation = var.configmap_annotation
-      pauseDeploymentAnnotation = var.pause_deployment_annotation
-      pauseDeploymentTimeAnnotation = var.pause_deployment_time_annotation
-      
-      # Debugging
-      enablePprof = var.enable_pprof
-      pprofAddr = var.pprof_addr
-    }
-    
-    replicaCount = var.replica_count
-    
     image = {
       repository = var.image_repository
-      tag = var.image_tag
+      tag        = var.image_tag
       pullPolicy = var.image_pull_policy
     }
-    
-    serviceAccount = {
-      create = var.create_rbac
-      name = var.service_account_name
-      annotations = var.service_account_annotations
+
+    reloader = {
+      autoReloadAll            = var.auto_reload_all
+      isArgoRollouts           = var.is_argo_rollouts
+      isOpenshift              = var.is_openshift
+      ignoreSecrets            = var.ignore_secrets
+      ignoreConfigMaps         = var.ignore_configmaps
+      ignoreJobs               = var.ignore_jobs
+      ignoreCronJobs           = var.ignore_cronjobs
+      reloadOnCreate           = var.reload_on_create
+      reloadOnDelete           = var.reload_on_delete
+      syncAfterRestart         = var.sync_after_restart
+      reloadStrategy           = var.reload_strategy
+      ignoreNamespaces         = var.namespaces_to_ignore
+      namespaceSelector        = var.namespace_selector
+      resourceLabelSelector    = var.resource_label_selector
+      logFormat                = var.log_format
+      logLevel                 = var.log_level
+      watchGlobally            = var.watch_globally
+      enableHA                 = var.enable_ha
+      enablePProf              = var.enable_pprof
+      pprofAddr                = var.pprof_addr
+      readOnlyRootFileSystem   = var.read_only_root_filesystem
+      enableMetricsByNamespace = var.enable_metrics_by_namespace
+
+      deployment = {
+        replicas                 = var.replica_count
+        nodeSelector             = var.node_selector
+        tolerations              = var.tolerations
+        affinity                 = var.affinity
+        securityContext          = var.security_context
+        containerSecurityContext = var.pod_security_context
+        resources                = var.resources
+      }
+
+      rbac = {
+        enabled = true
+      }
+
+      serviceAccount = {
+        create      = true
+        name        = "reloader"
+        annotations = {}
+      }
     }
-    
-    rbac = {
-      create = var.create_rbac
-    }
-    
-    resources = var.resources
-    
-    nodeSelector = var.node_selector
-    
-    tolerations = var.tolerations
-    
-    affinity = var.affinity
-    
-    securityContext = var.security_context
-    
-    podSecurityContext = var.pod_security_context
   })
 }

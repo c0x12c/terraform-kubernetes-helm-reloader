@@ -24,16 +24,6 @@ output "namespace_name" {
 }
 
 output "service_account_name" {
-  description = "Name of the service account"
-  value       = var.service_account_name
-}
-
-output "cluster_role_name" {
-  description = "Name of the cluster role (if RBAC is enabled)"
-  value       = var.create_rbac ? kubernetes_cluster_role.this[0].metadata[0].name : null
-}
-
-output "cluster_role_binding_name" {
-  description = "Name of the cluster role binding (if RBAC is enabled)"
-  value       = var.create_rbac ? kubernetes_cluster_role_binding.this[0].metadata[0].name : null
+  description = "Name of the service account (managed by Helm chart)"
+  value       = "reloader"
 }

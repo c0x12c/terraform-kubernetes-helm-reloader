@@ -19,7 +19,7 @@ variable "create_namespace" {
 variable "chart_version" {
   description = "Version of the Reloader Helm chart"
   type        = string
-  default     = "1.0.106"
+  default     = "1.4.8"
 }
 
 variable "chart_url" {
@@ -28,42 +28,109 @@ variable "chart_url" {
   default     = "https://stakater.github.io/stakater-charts"
 }
 
-variable "create_rbac" {
-  description = "Whether to create RBAC resources"
-  type        = bool
-  default     = true
-}
-
-variable "service_account_name" {
-  description = "Name of the service account"
-  type        = string
-  default     = "reloader"
-}
 
 # Reloader Configuration
+variable "auto_reload_all" {
+  description = "Whether to auto-reload all resources"
+  type        = bool
+  default     = false
+}
+
+variable "is_argo_rollouts" {
+  description = "Whether this is an Argo Rollouts deployment"
+  type        = bool
+  default     = false
+}
+
+variable "is_openshift" {
+  description = "Whether this is an OpenShift deployment"
+  type        = bool
+  default     = false
+}
+
+variable "ignore_secrets" {
+  description = "Whether to ignore secrets"
+  type        = bool
+  default     = false
+}
+
+variable "ignore_configmaps" {
+  description = "Whether to ignore configmaps"
+  type        = bool
+  default     = false
+}
+
+variable "ignore_jobs" {
+  description = "Whether to ignore Job workloads"
+  type        = bool
+  default     = false
+}
+
+variable "ignore_cronjobs" {
+  description = "Whether to ignore CronJob workloads"
+  type        = bool
+  default     = false
+}
+
+variable "reload_on_create" {
+  description = "Whether to reload on create"
+  type        = bool
+  default     = false
+}
+
+variable "reload_on_delete" {
+  description = "Whether to reload on delete"
+  type        = bool
+  default     = false
+}
+
+variable "sync_after_restart" {
+  description = "Whether to sync after restart"
+  type        = bool
+  default     = false
+}
+
 variable "watch_globally" {
   description = "Whether to watch all namespaces globally"
   type        = bool
   default     = true
 }
 
+variable "enable_ha" {
+  description = "Whether to enable high availability (leadership election)"
+  type        = bool
+  default     = false
+}
+
+variable "read_only_root_filesystem" {
+  description = "Whether to use read-only root filesystem"
+  type        = bool
+  default     = false
+}
+
+variable "enable_metrics_by_namespace" {
+  description = "Whether to expose prometheus counter of reloads by namespace"
+  type        = bool
+  default     = false
+}
+
 variable "reload_strategy" {
-  description = "Strategy for triggering rolling updates (env-vars or annotations)"
+  description = "Strategy for triggering rolling updates (default, env-vars or annotations)"
   type        = string
-  default     = "env-vars"
+  default     = "default"
   validation {
-    condition     = contains(["env-vars", "annotations"], var.reload_strategy)
-    error_message = "Reload strategy must be either 'env-vars' or 'annotations'."
+    condition     = contains(["default", "env-vars", "annotations"], var.reload_strategy)
+    error_message = "Reload strategy must be one of: 'default', 'env-vars', or 'annotations'."
   }
 }
 
 variable "log_level" {
-  description = "Log level for Reloader (debug, info, warn, error)"
+  description = "Log level for Reloader (trace, debug, info, warning, error, fatal, panic)"
   type        = string
   default     = "info"
   validation {
-    condition     = contains(["debug", "info", "warn", "error"], var.log_level)
-    error_message = "Log level must be one of: debug, info, warn, error."
+    condition     = contains(["trace", "debug", "info", "warning", "error", "fatal", "panic"], var.log_level)
+    error_message = "Log level must be one of: trace, debug, info, warning, error, fatal, panic."
   }
 }
 
@@ -176,13 +243,13 @@ variable "replica_count" {
 variable "image_repository" {
   description = "Reloader image repository"
   type        = string
-  default     = "stakater/reloader"
+  default     = "ghcr.io/stakater/reloader"
 }
 
 variable "image_tag" {
   description = "Reloader image tag"
   type        = string
-  default     = "v1.0.106"
+  default     = "v1.4.8"
 }
 
 variable "image_pull_policy" {
@@ -284,11 +351,6 @@ variable "namespace_annotations" {
   default     = {}
 }
 
-variable "service_account_annotations" {
-  description = "Annotations to apply to the service account"
-  type        = map(string)
-  default     = {}
-}
 
 # Additional Values
 variable "additional_values" {
