@@ -149,7 +149,7 @@ variable "resources_to_ignore" {
   type        = string
   default     = null
   validation {
-    condition     = var.resources_to_ignore == null || contains(["configmaps", "secrets"], var.resources_to_ignore)
+    condition     = var.resources_to_ignore == null ? true : contains(["configmaps", "secrets"], var.resources_to_ignore)
     error_message = "Resources to ignore must be either 'configmaps' or 'secrets'."
   }
 }
